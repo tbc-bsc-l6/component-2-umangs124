@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProductHistory::class, 'user_id');
     }
+
+    // Relationship to Role
+    public function role() {
+        return $this->belongsTo(User::class, 'role_id');
+    }
 }
