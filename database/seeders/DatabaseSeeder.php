@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\ProductType;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +23,21 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        ProductType::create([
+            'name' => 'Book'
+        ]);
+        ProductType::create([
+            'name' => 'CD'
+        ]);
+        ProductType::create([
+            'name' => 'Game'
+        ]);
+
+        Role::create([
+            'name' => 'Vendor'
+        ]);
+        Role::create([
+            'name' => 'Admin'
+        ]);
     }
 }
