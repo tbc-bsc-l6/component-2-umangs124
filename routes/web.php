@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// all products
+Route::get('/products', [ProductController::class, 'index']);
+
+// Show create form
+Route::get('/products/create', [ProductController::class, 'create']);
+
+// Store product data
+Route::post('/products', [ProductController::class, 'store']);
+
+/* ----------------------------------------------------- */
+
+// Store user data
+Route::post('/users', [UserController::class, 'store']);
