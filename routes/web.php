@@ -14,17 +14,20 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// All users
+Route::get('/users', [UserController::class, 'index']);
 
-// all products
-Route::get('/products', [ProductController::class, 'index']);
-
-// Show create form
-Route::get('/products/create', [ProductController::class, 'create']);
-
-// Store product data
-Route::post('/products', [ProductController::class, 'store']);
-
-/* ----------------------------------------------------- */
+// Show create form for users
+Route::get('/users/create', [UserController::class, 'create']);
 
 // Store user data
 Route::post('/users', [UserController::class, 'store']);
+
+// show edit form for users
+Route::get('/users/{users}/edit', [UserController::class, 'edit']);
+
+// update user
+Route::put('/users/{users}', [UserController::class, 'update']);
+
+// delete user
+Route::delete('/users/{users}', [UserController::class, 'destroy']);
