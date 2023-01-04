@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +18,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (Cache::has("getAllUsersWithRoleIdOne")) {
-            $users = Cache::get(("getAllUsersWithRoleIdOne"));
-            return view('users.index', ['users' => $users]);
-        }       
-        $users = User::query('users')->where('role_id', '=', 1)->get();
-        Cache::put("getAllUsersWithRoleIdOne", $users, now()->addminutes(10));
-        return view('users.index', ['users' => $users]);
+        $users = User::query('users')->where('role_id', '=', 1)->filter(request(['user_search']))->paginate(4);
+        return view('admin.index', ['users' => $users]);
     }
 
     /**
@@ -32,13 +29,13 @@ class UserController extends Controller
      */
     public function create()
     {
-        if (Cache::has("getRoleIdOne")) {
-            $roleId = Cache::get(("getRoleIdOne"));
-            return view('users.create', ['roleId' => $roleId]);
-        }   
+        // if (Cache::has("getRoleIdOne")) {
+        //     $roleId = Cache::get(("getRoleIdOne"));
+        //     return view('admin.create', ['roleId' => $roleId]);
+        // }
         $roleId = DB::table('roles')->select('id')->where('id', '=', 1)->get();
-        Cache::put("getRoleIdOne", $roleId, now()->addminutes(10));
-        return view('users.create', ['roleId' => $roleId]);
+        // Cache::put("getRoleIdOne", $roleId, now()->addminutes(10));
+        return view('admin.create', ['roleId' => $roleId]);
     }
 
     /**
@@ -60,11 +57,12 @@ class UserController extends Controller
         $roleId = json_decode($request->roleId);
 
         $formFields['role_id'] = $roleId[0]->id;
+
         $formFields['password'] = bcrypt($formFields['password']);
 
-        $user = User::create($formFields);
-        Cache::forget('getAllUsersWithRoleIdOne');
-        return redirect('/users')->with('success_message', 'User created successfully');
+        User::create($formFields);
+
+        return redirect('/')->with('message', 'User created successfully');
     }
 
     /**
@@ -76,7 +74,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = DB::table('users')->where('id', '=', $id)->first();
-        return view('users.edit', ['user' => $user]);
+        return view('admin.edit', ['user' => $user]);
     }
 
     /**
@@ -100,8 +98,8 @@ class UserController extends Controller
         $formFields['role_id'] = $request->roleId;
         $user->update($formFields);
 
-        Cache::forget('getAllUsersWithRoleIdOne');
-        return redirect('/users')->with('success_message', 'User created successfully');
+
+        return redirect('/')->with('message', 'User created successfully');
     }
 
     /**
@@ -114,18 +112,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        Cache::forget('getAllUsersWithRoleIdOne');
-        return redirect('/users')->with('deleteUser_message', 'User deleted successfully');
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect('/admin/vendors')->with('message', 'User deleted successfully');
     }
 }

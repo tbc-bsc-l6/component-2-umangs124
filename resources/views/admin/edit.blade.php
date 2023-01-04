@@ -1,7 +1,7 @@
 <x-layout>
     <div class="shadow-lg p-3 mb-5 bg-body rounded col-5 mx-auto mt-4">
         <h3 class="text-center">Update User</h3>
-        <form method="POST" action="/users/{{ $user->id }}" enctype="multipart/form-data">
+        <form method="POST" action="{{asset('updateVendor/' . $user->id)}}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-floating mb-3">

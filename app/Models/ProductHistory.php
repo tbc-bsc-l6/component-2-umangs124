@@ -9,15 +9,17 @@ class ProductHistory extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'product_name',
+        'product_price',
+        'product_type',
+        'action'
+    ];
+
     // Relationship to User
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    // Relationship to Product
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id');
     }
 }

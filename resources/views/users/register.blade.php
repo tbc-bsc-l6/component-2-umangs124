@@ -1,7 +1,7 @@
 <x-layout>
     <div class="shadow-lg p-3 mb-5 bg-body rounded col-5 mx-auto mt-4">
         <h3 class="text-center">Sign up</h3>
-        <form method="POST" action="/users" enctype="multipart/form-data">
+        <form method="POST" action="{{ asset('users/register') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" name="name" placeholder="Name"
@@ -19,7 +19,6 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-
             <div class="form-floating mb-3">
                 <input type="password" class="form-control" id="floatingInput" name="password" placeholder="password">
                 <label for="floatingInput">Password</label>

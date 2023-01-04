@@ -36,6 +36,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function scopeFilter($query)
+    {
+        if (request('user_search') ?? false) {
+            $query->where('name', 'like', '%' . request('user_search') . '%');
+        }
+    }
     /**
      * The attributes that should be cast.
      *
@@ -57,7 +63,8 @@ class User extends Authenticatable
     }
 
     // Relationship to Role
-    public function role() {
+    public function role()
+    {
         return $this->belongsTo(User::class, 'role_id');
     }
 }

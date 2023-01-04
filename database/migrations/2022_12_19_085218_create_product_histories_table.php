@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('product_histories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('product_name');
+            $table->string('product_price');
+            $table->string('product_type');
+            $table->string('action');
             $table->timestamps();
         });
     }
