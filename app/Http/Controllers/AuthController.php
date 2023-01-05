@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function login()
-    {           
+    {
         return view('users.login');
     }
-
     public function authenticate(Request $request)
-    {   
-        dd($request);
+    {
+        // dd($request);
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
@@ -29,16 +29,21 @@ class AuthController extends Controller
             return back()->withErrors(['password' => 'Invalid password']);
         }
         auth()->login($user);
-        return redirect('/')->with('message', 'You are now logged in');
+        if (Auth::user()?->role_id == 2) {
+            return redirect('/showAllVendors')->with('message', 'You are now logged in');
+        }
+        if (Auth::user()?->role_id == 1) {
+            return redirect('/showProductByVendorId')->with('message', 'You are now logged in');
+        }
     }
-
     public function register()
     {
-        $roleId = DB::table('roles')->select('id')->where('id', '=', 1)->get();
-        return view('users.register', ['roleId' => $roleId]); 
+        $roles = Role::all();
+        return view('users.register', ['roles' => $roles]);
     }
     public function store(Request $request)
     {
+       // dd($request);
         $formFields = $request->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
@@ -47,22 +52,25 @@ class AuthController extends Controller
         if ($request->hasFile('image')) {
             $formFields['image'] = $request->file('image')->store('userImage', 'public');
         }
-        $roleId = json_decode($request->roleId);
 
-        $formFields['role_id'] = $roleId[0]->id;
+        $formFields['role_id'] = $request->roleId;
 
         $formFields['password'] = bcrypt($formFields['password']);
 
         $user = User::create($formFields);
         auth()->login($user);
 
-        return redirect('/')->with('message', 'User created successfully');
+        if (Auth::user()?->role_id == 2) {
+            return redirect('/showAllVendors')->with('message', 'You are now logged in');
+        }
+        if (Auth::user()?->role_id == 1) {
+            return redirect('/showProductByVendorId')->with('message', 'You are now logged in');
+        }
     }
-    
-
     public function logout()
     {
         auth()->logout();
+        session()->flush();
         return redirect('/')->with('message', 'You have been logged out!');
     }
 }
