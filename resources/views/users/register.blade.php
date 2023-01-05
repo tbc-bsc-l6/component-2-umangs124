@@ -36,8 +36,15 @@
             </div>
             <input type="file" class="form-control mb-3" class="border border-gray-200 rounded p-2 w-full"
                 name="image" />
-            <input type="hidden" name="roleId" value={{ $roleId }}>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            @foreach ($roles as $role)
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="roleId" id="inlineRadio1"
+                        value="{{ $role->id }}">
+                    <label class="form-check-label" for="inlineRadio1">{{ $role->name }}</label>
+                </div>
+            @endforeach
+            <br/>
+            <button type="submit" class="btn btn-primary mt-2">Register</button>
         </form>
     </div>
 </x-layout>

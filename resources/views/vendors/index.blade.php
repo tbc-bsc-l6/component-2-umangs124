@@ -1,4 +1,5 @@
 <x-layout>
+    <x-alert />
     <div class="container text-center mb-4">
         <div class="row g-2 mt-4">
             @if (count($users) == 0)

@@ -1,5 +1,6 @@
 <x-layout>
-    <div class="container  mb-4">
+    <x-alert />
+    <div class="container mb-4">
         <div class="row g-2 mt-4">
             @if (count($products) == 0)
                 <p>No Products found</p>
@@ -8,7 +9,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="shadow-lg p-3 bg-body rounded" style="width: 100%; height: 100%;">
                         <div class="text-center">
-                            <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('images/blank-profile-picture.png') }}"
+                            <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('images/no-product-image.jpg') }}"
                                 class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
                         </div>
                         <div class="card-body">
@@ -19,8 +20,9 @@
                                 <li class="list-group-item">Product Type : {{ $product->productType }}</li>
                             </ul>
                             <div class="d-flex justify-content-center mb-2">
-                                <a href="#" class="btn btn-primary">Edit</a>
-                                <form method="POST" action="#">
+                                <a href="{{ asset('showEditProductForm/' . $product->id) }}"
+                                    class="btn btn-primary">Edit</a>
+                                <form method="POST" action="{{ asset('deleteProduct/' . $product->id) }}">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger ms-2" type="submit">Delete</button>

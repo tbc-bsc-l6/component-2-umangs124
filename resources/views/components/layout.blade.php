@@ -20,14 +20,16 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     @if (Auth::user()?->role_id == 2)
+                        <li class="nav-item">
+                            <span class="">Welcome {{ Auth::user()?->name }}</span>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ asset('showAllVendors') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="admin/vendors/create">Create Users</a>
+                            <a class="nav-link" href="{{ asset('showCreateVendorForm') }}">Create Users</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">View Products History</a>
@@ -35,16 +37,18 @@
                     @endif
                     @if (Auth::user()?->role_id == 1)
                         <li class="nav-item">
+                            <span class="nav-link active">Welcome, {{ Auth::user()?->name }}</span>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ asset('showProductByVendorId') }}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ asset('showCreateProductForm') }}">Create Product</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Change Password</a>
+                            <a class="nav-link" href="{{ asset('showChangePasswordForm') }}">Change Password</a>
                         </li>
                     @endif
-
                 </ul>
                 @auth
                     @if (Auth::user()?->role_id == 1)
