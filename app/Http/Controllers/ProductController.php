@@ -10,34 +10,20 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    /**
-     * Show all Product
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         //
         return view('products.index', ['products' => Product::all()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $productTypes = DB::table('product_types')->get();
         return view('products.create', ['productTypes' => $productTypes]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
 
@@ -64,47 +50,51 @@ class ProductController extends Controller
         $productHistory['user_id'] = $request->userId;
         $productHistory['action'] = "Product Added";
         ProductHistory::create($productHistory);
-        return redirect('/');
+        return redirect('showProductByVendorId')->with('message', 'Product added successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show()
     {
         $products = Product::query('products')
-        ->join('product_types', 'products.product_type_id', '=', 'product_types.id')
-        ->select('products.*', 'product_types.name as productType')
-        ->where('user_id', '=', Auth::user()?->id)
-        ->filter(request(['product_search']))->paginate(4);
-     //   dd($products);
+            ->join('product_types', 'products.product_type_id', '=', 'product_types.id')
+            ->select('products.*', 'product_types.name as productType')
+            ->where('user_id', '=', Auth::user()?->id)
+            ->filter(request(['product_search']))->paginate(4);
+        //   dd($products);
         return view('products.show', ['products' => $products]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
-        //
+        $product = DB::table('products')->where('id', '=', $id)->first();
+        return view('products.edit', ['product' => $product]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        
+        $product = Product::find($request->productId);
+        $formFields = $request->validate([
+            'price' => 'required|numeric|between:0,99999999.999',
+            'description' => 'required|min:8'
+        ]);
+        if ($request->hasFile('image')) {
+            $formFields['image'] = $request->file('image')->store('productImage', 'public');
+        }
+
+        $product->update($formFields);
+
+        $productTypeName = DB::table('product_types')->select('name')->where('id', '=', $request->productType)->first();        
+
+        $productHistory['product_name'] = $product->name;
+        $productHistory['product_price'] = $request->price;
+        $productHistory['product_type'] = $productTypeName->name;
+        $productHistory['user_id'] = $request->userId;
+        $productHistory['action'] = "Product Updated";
+        ProductHistory::create($productHistory);
+        return redirect('showProductByVendorId')->with('message', 'Product updated successfully');
     }
 
     /**
@@ -115,6 +105,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+
+        return redirect('showProductByVendorId')->with('message', 'Product deleted successfully');
     }
+
 }
