@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,23 +22,29 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 // show All users for admin
-Route::get('showAllVendors', [AdminController::class, 'index']);
+Route::get('showAllVendors', [UserController::class, 'index']);
 
 // Show create form for users
-Route::get('showCreateVendorForm', [AdminController::class, 'create']);
+Route::get('showCreateVendorForm', [UserController::class, 'create']);
 
 // Store user data by admin
-Route::post('createVendor', [AdminController::class, 'store']);
+Route::post('createVendor', [UserController::class, 'store']);
 
 // show edit form for users for admin
-Route::get('showEditVendorForm/{vendor}', [AdminController::class, 'edit']);
+Route::get('showEditVendorForm/{vendor}', [UserController::class, 'edit']);
 
 // update user by admin
-Route::put('updateVendor/{vendors}', [AdminController::class, 'update']);
+Route::put('updateVendor/{vendors}', [UserController::class, 'update']);
 
 // delete user by admin
-Route::delete('deleteVendor/{vendors}', [AdminController::class, 'destroy']);
+Route::delete('deleteVendor/{vendors}', [UserController::class, 'destroy']);
 
+Route::get('showChangePasswordForm', [UserController::class, 'showChangePasswordForm']);
+Route::post('changePassword', [UserController::class, 'changePassword']);
+Route::post('sendVerificationCode', [UserController::class, 'sendVerificationCode']);
+
+Route::get('verificationCodeForm', [UserController::class, 'verificationCodeForm']);
+Route::post('verifyVerificationCode', [UserController::class, 'verifyVerificationCode']);
 
 
 /*
@@ -51,6 +57,7 @@ Route::get('users/showLoginForm', [AuthController::class, 'login']);
 Route::post('users/register', [AuthController::class, 'store']);
 Route::post('users/login', [AuthController::class, 'authenticate']);
 Route::post('users/logout', [AuthController::class, 'logout']);
+
 
 /*
 |--------------------------------------------------------------------------
