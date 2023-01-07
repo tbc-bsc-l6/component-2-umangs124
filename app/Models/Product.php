@@ -21,7 +21,7 @@ class Product extends Model
     public function scopeFilter($query)
     {
         if (request('product_search') ?? false) {
-            $query->where('name', 'like', '%' . request('product_search') . '%');
+            $query->where('products.name', 'like', '%' . request('product_search') . '%');
         }
     }
     // Relationship to User
