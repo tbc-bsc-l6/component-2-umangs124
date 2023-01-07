@@ -2,6 +2,7 @@
     <x-alert />
     <div class="container mb-4">
         <div class="row g-2 mt-4">
+            <h4 class="text-center shadow-lg p-3 bg-body rounded">{{Auth::user()?->name}} Products</h4>
             @if (count($products) == 0)
                 <p>No Products found</p>
             @endif

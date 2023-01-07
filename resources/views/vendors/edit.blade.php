@@ -29,7 +29,7 @@
                 <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('/images/blank-profile-picture.png') }}"
                     class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
             </div>
-            <input type="hidden" name="roleId" value={{ $user->role_id }}>
+            <input type="hidden" name="userId" value={{ $user->id }}>
         </form>
     </div>
 </x-layout>

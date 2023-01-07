@@ -23,7 +23,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     @if (Auth::user()?->role_id == 2)
                         <li class="nav-item">
-                            <span class="">Welcome {{ Auth::user()?->name }}</span>
+                            <span class="nav-link active">Welcome, {{ Auth::user()?->name }}</span>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ asset('showAllVendors') }}">Home</a>
