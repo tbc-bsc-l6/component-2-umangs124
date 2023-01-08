@@ -16,7 +16,6 @@ class AuthController extends Controller
     }
     public function authenticate(Request $request)
     {
-        // dd($request);
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
@@ -33,7 +32,7 @@ class AuthController extends Controller
             return redirect('/showAllVendors')->with('message', 'You are now logged in');
         }
         if (Auth::user()?->role_id == 1) {
-            return redirect('/showProductByVendorId')->with('message', 'You are now logged in');
+            return redirect('showProductByVendorId/' . Auth::user()?->id)->with('message', 'You are now logged in');
         }
     }
     public function register()
@@ -43,17 +42,15 @@ class AuthController extends Controller
     }
     public function store(Request $request)
     {
-       // dd($request);
         $formFields = $request->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
+            'role_id' => 'required'
         ]);
         if ($request->hasFile('image')) {
             $formFields['image'] = $request->file('image')->store('userImage', 'public');
         }
-
-        $formFields['role_id'] = $request->roleId;
 
         $formFields['password'] = bcrypt($formFields['password']);
 
@@ -64,7 +61,7 @@ class AuthController extends Controller
             return redirect('/showAllVendors')->with('message', 'You are now logged in');
         }
         if (Auth::user()?->role_id == 1) {
-            return redirect('/showProductByVendorId')->with('message', 'You are now logged in');
+            return redirect('showProductByVendorId/' . Auth::user()?->id)->with('message', 'You are now logged in');
         }
     }
     public function logout()
