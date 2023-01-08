@@ -15,10 +15,10 @@ class UserRepository implements UserRepositoryInterface
         return User::query('users')->where('role_id', '=', 1)->filter(request(['user_search']))->paginate(8);
     }
 
-    public function getRoleIdWithIdOne()
-    {
-        return DB::table('roles')->select('id')->where('id', '=', 1)->get();
-    }
+    // public function getRoleIdWithIdOne()
+    // {
+    //     return DB::table('roles')->select('id')->where('id', '=', 1)->get();
+    // }
     public function addUser($user)
     {
         User::create($user);
@@ -69,5 +69,10 @@ class UserRepository implements UserRepositoryInterface
     public function deleteUser($userId)
     {
         DB::table('users')->where('id', $userId)->delete();
+    }
+    public function getVerificationToken($id)
+    {
+        return DB::table('users')->select('verification_token')
+        ->where('id', '=', $id)->first();
     }
 }

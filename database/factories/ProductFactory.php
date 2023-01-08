@@ -21,6 +21,7 @@ class ProductFactory extends Factory
             'price' => $this->faker->numberBetween($min = 15, $max = 100),
             'description' => $this->faker->paragraph(1),
             'product_type_id' => random_int(1, 3),
+            'stock_id' => random_int(1, 2)
         ];
     }
 }

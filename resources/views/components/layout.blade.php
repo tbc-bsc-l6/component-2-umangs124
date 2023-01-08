@@ -29,10 +29,10 @@
                             <a class="nav-link" href="{{ asset('showAllVendors') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ asset('showCreateVendorForm') }}">Create Users</a>
+                            <a class="nav-link" href="{{ asset('showProductTypes') }}">Product Types</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">View Products History</a>
+                            <a class="nav-link" href="{{ asset('showProductHistories') }}">Products Histories</a>
                         </li>
                     @endif
                     @if (Auth::user()?->role_id == 1)
@@ -40,7 +40,8 @@
                             <span class="nav-link active">Welcome, {{ Auth::user()?->name }}</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ asset('showProductByVendorId') }}">Home</a>
+                            <a class="nav-link"
+                                href="{{ asset('showProductByVendorId/' . Auth::user()?->id) }}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ asset('showCreateProductForm') }}">Create Product</a>
@@ -52,7 +53,8 @@
                 </ul>
                 @auth
                     @if (Auth::user()?->role_id == 1)
-                        <form action="{{ asset('showProductByVendorId') }}" class="d-flex" role="product_search">
+                        <form action="{{ asset('showProductByVendorId/' . Auth::user()?->id) }}" class="d-flex"
+                            role="product_search">
                             <input class="form-control me-2" type="text" name="product_search" placeholder="Search"
                                 aria-label="Search">
                             <button class="btn btn-outline-success me-2" type="submit">Search</button>
@@ -66,7 +68,7 @@
                         </form>
                     @endif
                     <div>
-                        <form method="POST" action="users/logout">
+                        <form method="POST" action="{{ asset('users/logout') }}">
                             @csrf
                             <button class="btn btn-danger" type="submit">
                                 Logout

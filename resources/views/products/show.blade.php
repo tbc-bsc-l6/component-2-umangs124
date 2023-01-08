@@ -2,7 +2,7 @@
     <x-alert />
     <div class="container mb-4">
         <div class="row g-2 mt-4">
-            <h4 class="text-center shadow-lg p-3 bg-body rounded">{{Auth::user()?->name}} Products</h4>
+            <h4 class="text-center shadow-lg p-3 bg-body rounded">{{ $user_name }} Products</h4>
             @if (count($products) == 0)
                 <p>No Products found</p>
             @endif
@@ -15,6 +15,12 @@
                         </div>
                         <div class="card-body">
                             <h5 class="my-3 text-center">{{ $product->name }}</h5>
+                            @if ($product->stock_id == 1)
+                                <i class="text-success d-flex flex-row-reverse">{{ $product->stockName }}</i>
+                            @endif
+                            @if ($product->stock_id == 2)
+                                <i class="text-danger d-flex flex-row-reverse">{{ $product->stockName }}</i>
+                            @endif
                             <ul class="list-group mb-3">
                                 <li class="list-group-item">Price : ${{ $product->price }}</li>
                                 <li class="list-group-item">Description : {{ $product->description }}</li>

@@ -14,6 +14,12 @@
                         </div>
                         <div class="card-body">
                             <h5 class="my-3 text-center">{{ $product->name }}</h5>
+                            @if ($product->stock_id == 1)
+                                <i class="text-success d-flex flex-row-reverse">{{ $product->stockName }}</i>
+                            @endif
+                            @if ($product->stock_id == 2)
+                                <i class="text-danger d-flex flex-row-reverse">{{ $product->stockName }}</i>
+                            @endif
                             <ul class="list-group mb-3">
                                 <li class="list-group-item">Price : ${{ $product->price }}</li>
                                 <li class="list-group-item">Description : {{ $product->description }}</li>
@@ -24,8 +30,5 @@
                 </div>
             @endforeach
         </div>
-        {{-- <div class="mt-4">
-            {{ $products->links() }}
-        </div> --}}
     </div>
 </x-layout>

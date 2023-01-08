@@ -38,12 +38,15 @@
                 name="image" />
             @foreach ($roles as $role)
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="roleId" id="inlineRadio1"
+                    <input class="form-check-input" type="radio" name="role_id" id="inlineRadio1"
                         value="{{ $role->id }}">
                     <label class="form-check-label" for="inlineRadio1">{{ $role->name }}</label>
                 </div>
             @endforeach
-            <br/>
+            @error('role_id')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+            <br />
             <button type="submit" class="btn btn-primary mt-2">Register</button>
         </form>
     </div>

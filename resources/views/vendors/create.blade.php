@@ -1,6 +1,6 @@
 <x-layout>
     <div class="shadow-lg p-3 mb-5 bg-body rounded col-5 mx-auto mt-4">
-        <h3 class="text-center">Create User</h3>
+        <h3 class="text-center">Create Vendor</h3>
         <form method="POST" action="{{asset('createVendor')}}" enctype="multipart/form-data">
             @csrf
             <div class="form-floating mb-3">

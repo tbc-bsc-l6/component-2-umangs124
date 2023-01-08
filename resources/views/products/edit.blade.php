@@ -1,7 +1,7 @@
 <x-layout>
-    
+
     <div class="shadow-lg p-3 mb-5 bg-body rounded col-5 mx-auto mt-4">
-        <h3 class="text-center">Update Product</h3>
+        <h3 class="text-center">Update {{ $product->name }}</h3>
         <form method="POST" action="{{ asset('updateProduct/' . $product->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -14,8 +14,8 @@
                 @enderror
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" name="description" placeholder="Description"
-                    value="{{ $product->description }}">
+                <input type="text" class="form-control" id="floatingInput" name="description"
+                    placeholder="Description" value="{{ $product->description }}">
                 <label for="floatingInput">Product Description</label>
                 @error('description')
                     <span class="text-danger">{{ $message }}</span>
@@ -30,9 +30,20 @@
                 <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('/images/no-product-image.jpg') }}"
                     class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
             </div>
+            @foreach ($stocks as $stock)
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="stock_id" id="inlineRadio1"
+                        value="{{ $stock->id }}">
+                    <label class="form-check-label" for="inlineRadio1">{{ $stock->name }}</label>
+                </div>
+            @endforeach
+            @error('stock_id')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+            <br>
             <input type="hidden" name="productId" value={{ $product->id }}>
             <input type="hidden" name="userId" value={{ Auth::user()?->id }}>
-            <input type="hidden" name="productType" value={{ $product->product_type_id }}>
+            <input type="hidden" name="product_type_id" value={{ $product->product_type_id }}>
         </form>
     </div>
 </x-layout>

@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\Role;
+use App\Models\Stock;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -35,6 +36,14 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Admin'
         // ]);
 
+        // Stock::create([
+        //     'name' => 'In Stock'
+        // ]);
+        // Stock::create([
+        //     'name' => 'Out Of Stock'
+        // ]);
+
+
        // For Admin
         \App\Models\User::factory()->create([
             'name' => 'Elle Monet Richards',
@@ -45,7 +54,7 @@ class DatabaseSeeder extends Seeder
         
         // For Vendor
 
-        $user = \App\Models\User::factory(30)->create();
+        $user = \App\Models\User::factory(50)->create();
 
 
         
@@ -58,7 +67,7 @@ class DatabaseSeeder extends Seeder
 
         
 
-        Product::factory(30)->create([
+        Product::factory(50)->create([
             'user_id' => $user->id
         ]);
 
