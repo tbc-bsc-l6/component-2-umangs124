@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductType extends Model
 {
     use HasFactory;
+    protected $fillable = ['name'];
     // Relationship to Product
     public function products()
     {
