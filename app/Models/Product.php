@@ -15,7 +15,8 @@ class Product extends Model
         'image',
         'description',
         'product_type_id',
-        'user_id'
+        'user_id',
+        'stock_id'
     ];
     
     public function scopeFilter($query)
@@ -32,6 +33,12 @@ class Product extends Model
     // Relationship to ProductType
     public function productType() {
         return $this->belongsTo(ProductType::class, 'product_type_id');
+    }
+
+    // Relationship to Stock
+    public function stock()
+    {
+        return $this->belongsTo(Product::class, 'stock_id');
     }
 
 }
