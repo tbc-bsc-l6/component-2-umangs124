@@ -12,14 +12,27 @@
                 @enderror
             </div>
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="floatingInput" name="password" placeholder="password">
+                <input type="password" class="form-control" id="myInput" name="password" placeholder="password">
                 <label for="floatingInput">Password</label>
                 @error('password')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            {{-- <input type="hidden" name="roleId" value={{ $roleId }}> --}}
+            <span class="d-flex flex-row-reverse me-2">
+                <input type="checkbox" onclick="myFunction()"><span class="m-1">Show Password</span> 
+            </span>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </div>
 </x-layout>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>

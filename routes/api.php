@@ -20,5 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// show products by product type
 Route::get('/products/{productType}', [ProductController::class, 'productsByProductTypeApi']);
 

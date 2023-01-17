@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface UserRepositoryInterface 
 {
-    public function getAllUsers();
+    public function getAllUsersById();
     public function addUser($user);
     public function getUserById($id);
     public function updateUser($userId, $formFields);

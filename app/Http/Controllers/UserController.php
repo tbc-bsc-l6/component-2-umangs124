@@ -8,6 +8,7 @@ use App\Repositories\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
@@ -22,21 +23,22 @@ class UserController extends Controller
     }
     public function index()
     {
-
-        $users = $this->userRepository->getAllUsers();
+        $users = $this->userRepository->getAllUsersById();
         return view('vendors.index', ['users' => $users]);
     }
 
     public function create()
     {
-
+        if (Cache::has('roleWithIdOne')) {
+            $roleId = Cache::get('roleWithIdOne');
+        }
         $roleId = DB::table('roles')->select('id')->where('id', '=', 1)->get();
+        Cache::put('roleWithIdOne', $roleId, now()->addMinutes(10));
         return view('vendors.create', ['roleId' => $roleId]);
     }
 
     public function store(Request $request)
     {
-
         $formFields = $request->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
@@ -56,14 +58,12 @@ class UserController extends Controller
 
     public function edit($id)
     {
-
         $user = $this->userRepository->getUserById($id);
         return view('vendors.edit', ['user' => $user]);
     }
 
     public function update(Request $request)
     {
-
         $formFields = $request->validate([
             'name' => 'required',
             'email' => 'required|email'
@@ -73,7 +73,7 @@ class UserController extends Controller
             if (File::exists(public_path('storage/' . $user->image))) {
                 File::delete(public_path('storage/' . $user->image));
             }
-            $formFields['image'] = $request->file('image')->store('userImage', 'public');         
+            $formFields['image'] = $request->file('image')->store('userImage', 'public');
         }
         $this->userRepository->updateUser($request->userId, $formFields);
 
@@ -82,7 +82,6 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-
         $user = $this->userRepository->getUserById($id);
         if (File::exists(public_path('storage/' . $user->image))) {
             File::delete(public_path('storage/' . $user->image));
@@ -93,12 +92,14 @@ class UserController extends Controller
 
     public function showChangePasswordForm()
     {
-
         return view('vendors.changePasswordForm');
     }
 
     public function sendVerificationCode(Request $request)
     {
+        $formFields = $request->validate([
+            'password' => 'required|confirmed|min:6'
+        ]);
 
         $code = random_int(100000, 999999);
         $data = ['code' => $code];
@@ -117,13 +118,11 @@ class UserController extends Controller
 
     public function verificationCodeForm()
     {
-
         return view('vendors.verificationCodeForm');
     }
 
     public function verifyVerificationCode(Request $request)
     {
-
         $getCode = $request->code;
         $actualCode = $this->userRepository->getVerificationToken(Auth::user()?->id);
         if ($getCode != $actualCode->verification_token) {

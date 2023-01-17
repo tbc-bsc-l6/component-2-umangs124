@@ -10,15 +10,11 @@ use Illuminate\Support\Facades\Session;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function getAllUsers()
+    public function getAllUsersById()
     {
         return User::query('users')->where('role_id', '=', 1)->latest()->filter(request(['user_search']))->paginate(8);
     }
 
-    // public function getRoleIdWithIdOne()
-    // {
-    //     return DB::table('roles')->select('id')->where('id', '=', 1)->get();
-    // }
     public function addUser($user)
     {
         User::create($user);

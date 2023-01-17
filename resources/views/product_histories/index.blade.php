@@ -24,7 +24,7 @@
                         <tbody>
                             <tr>
                                 <td>{{ $productHistory->product_name }}</td>
-                                <td>$ {{ $productHistory->product_price }}</td>
+                                <td>${{ $productHistory->product_price }}</td>
                                 <td>{{ $productHistory->product_type }}</td>
                                 <td>
                                     @if ($productHistory->stock == 'In Stock')

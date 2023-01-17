@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -37,7 +39,12 @@ class AuthController extends Controller
     }
     public function register()
     {
-        $roles = Role::all();
+        if (Cache::has('allRoles')) {
+            $roles = Cache::get('allRoles');
+        } else {
+            $roles = Role::all();
+            Cache::put('allRoles', $roles, now()->addMinutes(10));
+        }
         return view('users.register', ['roles' => $roles]);
     }
     public function store(Request $request)
@@ -68,6 +75,7 @@ class AuthController extends Controller
     {
         auth()->logout();
         session()->flush();
+        Artisan::call('cache:clear');
         return redirect('/')->with('message', 'You have been logged out!');
     }
 }

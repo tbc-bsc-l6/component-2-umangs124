@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Interfaces\ProductHistoryRepositoryInterface;
 use App\Repositories\ProductHistoryRepository;
-
+use Illuminate\Support\Facades\Cache;
 
 class ProductHistoryController extends Controller
 {
@@ -14,17 +15,18 @@ class ProductHistoryController extends Controller
     }
     public function index()
     {
-        // $productHistories = ProductHistory::query('product_histories')
-        // ->join('users', 'users.id', '=', 'product_histories.user_id')
-        // ->select('product_histories.*', 'users.name as userName')->get();
+        if (Cache::has('allProductHistories')) {
+            $productHistories = Cache::get('allProductHistories');
+            return view('product_histories.index', ['productHistories' => $productHistories]);
+        }
         $productHistories = $this->productHistoryRepository->getALlProductHistories();
+        Cache::put('allProductHistories', $productHistories, now()->addMinutes(10));
         return view('product_histories.index', ['productHistories' => $productHistories]);
     }
     public function destroy($id)
     {
-
         $this->productHistoryRepository->deleteProductHistory($id);
-        // DB::table('product_histories')->where('id', $id)->delete();
+        Cache::forget('allProductHistories');
         return back()->with('message', 'Deleted successfully');
     }
 }

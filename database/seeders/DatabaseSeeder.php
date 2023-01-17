@@ -45,29 +45,29 @@ class DatabaseSeeder extends Seeder
 
 
        // For Admin
-        \App\Models\User::factory()->create([
-            'name' => 'Elle Monet Richards',
-            'email' => 'elle@gmail.com',
-            'password' => bcrypt('Nepal@123'),
-            'role_id' => '2'
-        ]);
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Elle Monet Richards',
+        //     'email' => 'elle@gmail.com',
+        //     'password' => bcrypt('Nepal@123'),
+        //     'role_id' => '2'
+        // ]);
         
-        // For Vendor
+        // // For Vendor
 
-        $user = \App\Models\User::factory(50)->create();
+        // $user = \App\Models\User::factory(50)->create();
 
 
         
-        $user = \App\Models\User::factory()->create([
-            'name' => 'Umang Shrestha',
-            'email' => 'umangstha124@gmail.com',
-            'password' => bcrypt('Nepal@123'),
-            'role_id' => '1'
-        ]);
+        // $user = \App\Models\User::factory()->create([
+        //     'name' => 'Umang Shrestha',
+        //     'email' => 'umangstha124@gmail.com',
+        //     'password' => bcrypt('Nepal@123'),
+        //     'role_id' => '1'
+        // ]);
 
-        Product::factory(50)->create([
-            'user_id' => $user->id
-        ]);
+        // Product::factory(50)->create([
+        //     'user_id' => $user->id
+        // ]);
 
     }
 }

@@ -14,6 +14,7 @@ use App\Repositories\ProductTypeRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
@@ -32,15 +33,30 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $products = $this->productRepository->getAllProducts();
-        $productTypes = $this->productTypeRepository->getAllProductTypes();
+        if (Cache::has('allProducts')) {
+            $products = Cache::get('allProducts');
+        } else {
+            $products = $this->productRepository->getAllProducts();
+            Cache::put('allProducts', $products, now()->addMinutes(10));
+        }
+        if (Cache::has('allProductTypes')) {
+            $productTypes = Cache::get('allProductTypes');
+        } else {
+            $productTypes = $this->productTypeRepository->getAllProductTypes();
+            Cache::put('allProductTypes', $productTypes, now()->addMinutes(10));
+        }
         return view('products.index', ['products' => $products, 'productTypes' => $productTypes]);
     }
     public function create()
     {
 
         $productTypes = $this->productRepository->getAllProductTypes();
-        $stocks = Stock::all();
+        if (Cache::has('allStocks')) {
+            $stocks = Cache::get('allStocks');
+        } else {
+            $stocks = Stock::all();
+            Cache::put('allStocks', $stocks, now()->addMinutes(10));
+        }
         return view('products.create', ['productTypes' => $productTypes, 'stocks' => $stocks]);
     }
     public function store(Request $request)
@@ -71,6 +87,9 @@ class ProductController extends Controller
         $productHistory['action'] = "Product Added";
         $productHistory['stock'] = $stock->name;
         $this->productHistoryRepository->addProductHistory($productHistory);
+
+        Cache::forget('allProducts');
+        Cache::forget('allProductHistories');
         return redirect('showProductByVendorId/' . Auth::user()?->id)->with('message', 'Product added successfully');
     }
 
@@ -91,9 +110,13 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-
         $product = $this->productRepository->getProductByProductId($id);
-        $stocks = Stock::all();
+        if (Cache::has('allStocks')) {
+            $stocks = Cache::get('allStocks');
+        } else {
+            $stocks = Stock::all();
+            Cache::put('allStocks', $stocks, now()->addMinutes(10));
+        }
         return view('products.edit', ['product' => $product, 'stocks' => $stocks]);
     }
 
@@ -129,6 +152,9 @@ class ProductController extends Controller
 
         $this->productHistoryRepository->addProductHistory($productHistory);
 
+        Cache::forget('allProducts');
+        Cache::forget('allProductHistories');
+        
         return redirect('showProductByVendorId/' . Auth::user()?->id)->with('message', 'Product updated successfully');
     }
 
@@ -139,7 +165,8 @@ class ProductController extends Controller
             File::delete(public_path('storage/' . $product->image));
         }
         $this->productRepository->deleteProduct($id);
-
+        Cache::forget('allProducts');
+        Cache::forget('allProductHistories');
         return redirect('showProductByVendorId/' . Auth::user()?->id)->with('message', 'Product deleted successfully');
     }
     public function productsByProductTypeApi($productTypeId)
