@@ -16,7 +16,7 @@ class ProductRepository implements ProductRepositoryInterface
             ->join('product_types', 'products.product_type_id', '=', 'product_types.id')
             ->join('stocks', 'stocks.id', '=', 'products.stock_id')
             ->select('products.*', 'product_types.name as productType', 
-            'stocks.name as stockName')->get();
+            'stocks.name as stockName')->latest()->get();
     }
     public function getAllProductTypes()
     {
@@ -42,7 +42,7 @@ class ProductRepository implements ProductRepositoryInterface
             ->join('stocks', 'stocks.id', '=', 'products.stock_id')
             ->select('products.*', 'product_types.name as productType', 'stocks.name as stockName')
             ->where('user_id', '=', $userId)
-            ->filter(request(['product_search']))->paginate(8);
+            ->latest()->filter(request(['product_search']))->paginate(8);
     }
 
     public function getProductByProductId($productId)
@@ -57,7 +57,8 @@ class ProductRepository implements ProductRepositoryInterface
             ->update([
                 'price' => $formFields['price'],
                 'description' => $formFields['description'],
-                'updated_at' => Carbon::now()
+                'updated_at' => Carbon::now(),
+                'stock_id' => $formFields['stock_id']
             ]);
 
         if (count($formFields) == 4) {
@@ -72,5 +73,14 @@ class ProductRepository implements ProductRepositoryInterface
     public function deleteProduct($productId)
     {
         DB::table('products')->where('id', $productId)->delete();
+    }
+
+    public function productsByProductType($productTypeId)
+    {
+        return Product::query('products')
+            ->join('product_types', 'products.product_type_id', '=', 'product_types.id')
+            ->join('stocks', 'stocks.id', '=', 'products.stock_id')
+            ->select('products.*', 'product_types.name as productType', 'stocks.name as stockName')
+            ->where('product_type_id', '=', $productTypeId)->latest()->get();
     }
 }

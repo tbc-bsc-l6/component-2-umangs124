@@ -20,7 +20,7 @@ class ProductHistoryRepository implements ProductHistoryRepositoryInterface
     {
         return ProductHistory::query('product_histories')
         ->join('users', 'users.id', '=', 'product_histories.user_id')
-        ->select('product_histories.*', 'users.name as userName')->get();
+        ->select('product_histories.*', 'users.name as userName')->latest()->get();
     }
     public function deleteProductHistory($id)
     {

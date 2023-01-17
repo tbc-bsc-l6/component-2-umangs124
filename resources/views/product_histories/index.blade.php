@@ -24,9 +24,16 @@
                         <tbody>
                             <tr>
                                 <td>{{ $productHistory->product_name }}</td>
-                                <td>{{ $productHistory->product_price }}</td>
+                                <td>$ {{ $productHistory->product_price }}</td>
                                 <td>{{ $productHistory->product_type }}</td>
-                                <td>{{ $productHistory->stock }}</td>
+                                <td>
+                                    @if ($productHistory->stock == 'In Stock')
+                                        <i class="text-success">{{ $productHistory->stock }}</i>
+                                    @endif
+                                    @if ($productHistory->stock == 'Out Of Stock')
+                                        <i class="text-danger">{{ $productHistory->stock }}</i>
+                                    @endif
+                                </td>
                                 <td>{{ $productHistory->action }}</td>
                                 <td>{{ $productHistory->created_at }}</td>
                                 <td>{{ $productHistory->userName }}</td>

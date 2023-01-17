@@ -10,7 +10,7 @@
                 <p>No users found</p>
             @endif
             @foreach ($users as $user)
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-4 col-md-5">
                     <div class="shadow-lg p-3 bg-body rounded" style="width: 100%; height: 100%;">
                         <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('images/blank-profile-picture.png') }}"
                             class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
@@ -21,7 +21,7 @@
                                 <li class="list-group-item">Created at : {{ $user->created_at }}</li>
                             </ul>
                             <div class="mb-3 d-flex flex-row-reverse">
-                                <a target="_blank" href="{{ asset('showProductByVendorId/' . $user->id) }}"><i>View Products>></i></a>
+                                <a target="_blank" href="{{ asset('showProductByVendorId/' . $user->id) }}"><i><u>View Products</u></i></a>
                             </div>
                             <div class="d-flex justify-content-center mb-2">
                                 <a href="{{ asset('showEditVendorForm/' . $user->id) }}"

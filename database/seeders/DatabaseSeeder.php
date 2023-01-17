@@ -65,8 +65,6 @@ class DatabaseSeeder extends Seeder
             'role_id' => '1'
         ]);
 
-        
-
         Product::factory(50)->create([
             'user_id' => $user->id
         ]);

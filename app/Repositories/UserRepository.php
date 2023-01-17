@@ -12,7 +12,7 @@ class UserRepository implements UserRepositoryInterface
 {
     public function getAllUsers()
     {
-        return User::query('users')->where('role_id', '=', 1)->filter(request(['user_search']))->paginate(8);
+        return User::query('users')->where('role_id', '=', 1)->latest()->filter(request(['user_search']))->paginate(8);
     }
 
     // public function getRoleIdWithIdOne()

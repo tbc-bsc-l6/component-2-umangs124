@@ -12,4 +12,5 @@ interface ProductRepositoryInterface
     public function getProductByProductId($productId);
     public function updateProduct($productId, $formFields);
     public function deleteProduct($productId);
+    public function productsByProductType($productTypeId);
 }
