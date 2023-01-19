@@ -112,6 +112,9 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = $this->productRepository->getProductByProductId($id);
+        if (Auth::user()?->id != $product->user_id) {
+            abort(403, 'Unauthorized Action');
+        }
         if (Cache::has('allStocks')) {
             $stocks = Cache::get('allStocks');
         } else {
@@ -152,7 +155,7 @@ class ProductController extends Controller
 
         Cache::forget('allProducts');
         Cache::forget('allProductHistories');
-        
+
         return redirect('showProductByVendorId/' . Auth::user()?->id)->with('message', 'Product updated successfully');
     }
 
