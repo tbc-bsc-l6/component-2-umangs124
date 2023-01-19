@@ -19,55 +19,53 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {        
-        // ProductType::create([
-        //     'name' => 'Book'
-        // ]);
-        // ProductType::create([
-        //     'name' => 'CD'
-        // ]);
-        // ProductType::create([
-        //     'name' => 'Game'
-        // ]);
+        ProductType::create([
+            'name' => 'Book'
+        ]);
+        ProductType::create([
+            'name' => 'CD'
+        ]);
+        ProductType::create([
+            'name' => 'Game'
+        ]);
 
-        // Role::create([
-        //     'name' => 'Vendor'
-        // ]);
-        // Role::create([
-        //     'name' => 'Admin'
-        // ]);
+        Role::create([
+            'name' => 'Vendor'
+        ]);
+        Role::create([
+            'name' => 'Admin'
+        ]);
 
-        // Stock::create([
-        //     'name' => 'In Stock'
-        // ]);
-        // Stock::create([
-        //     'name' => 'Out Of Stock'
-        // ]);
+        Stock::create([
+            'name' => 'In Stock'
+        ]);
+        Stock::create([
+            'name' => 'Out Of Stock'
+        ]);
 
 
-       // For Admin
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Elle Monet Richards',
-        //     'email' => 'elle@gmail.com',
-        //     'password' => bcrypt('Nepal@123'),
-        //     'role_id' => '2'
-        // ]);
+      // For Admin
+        \App\Models\User::factory()->create([
+            'name' => 'Elle Monet Richards',
+            'email' => 'elle@gmail.com',
+            'password' => bcrypt('Nepal@123'),
+            'role_id' => '2'
+        ]);
         
-        // // For Vendor
-
-        // $user = \App\Models\User::factory(50)->create();
-
+        // For Vendor
+        $user = \App\Models\User::factory(50)->create();
 
         
-        // $user = \App\Models\User::factory()->create([
-        //     'name' => 'Umang Shrestha',
-        //     'email' => 'umangstha124@gmail.com',
-        //     'password' => bcrypt('Nepal@123'),
-        //     'role_id' => '1'
-        // ]);
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Umang Shrestha',
+            'email' => 'umangstha124@gmail.com',
+            'password' => bcrypt('Nepal@123'),
+            'role_id' => '1'
+        ]);
 
-        // Product::factory(50)->create([
-        //     'user_id' => $user->id
-        // ]);
+        Product::factory(50)->create([
+            'user_id' => $user->id
+        ]);
 
     }
 }

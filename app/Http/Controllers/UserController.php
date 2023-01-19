@@ -85,6 +85,8 @@ class UserController extends Controller
             File::delete(public_path('storage/' . $user->image));
         }
         $this->userRepository->deleteUser($id);
+        Cache::forget('allProducts');
+        Cache::forget('allProductHistories');
         return redirect('showAllVendors')->with('message', 'User deleted successfully');
     }
 
