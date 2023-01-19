@@ -14,10 +14,14 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
     }
     public function getAllProductTypes()
     {
-        return ProductType::all();
+        return ProductType::latest()->get();
     }
     public function deleteProductTypes($id)
     {
         DB::table('product_types')->where('id', $id)->delete();
+    }
+    public function getProductTypeNameById($productType)
+    {
+        return DB::table('product_types')->select('name')->where('id', '=', $productType)->first();
     }
 }

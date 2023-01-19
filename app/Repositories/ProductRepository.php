@@ -30,10 +30,7 @@ class ProductRepository implements ProductRepositoryInterface
         $productId = DB::table('products')->insertGetId($formFields);
         return $productId;
     }
-    public function getProductTypeNameById($productType)
-    {
-        return DB::table('product_types')->select('name')->where('id', '=', $productType)->first();
-    }
+    
 
     public function getProductsByUserId($userId)
     {

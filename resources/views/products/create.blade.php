@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="shadow-lg p-3 mb-5 bg-body rounded col-5 mx-auto mt-4">
+    <x-form-card>
         <h3 class="text-center">Create Product</h3>
         <form method="POST" action="{{ asset('createProduct') }}" enctype="multipart/form-data">
             @csrf
@@ -53,5 +53,5 @@
             <input type="hidden" name="userId" value={{ Auth::user()?->id }}>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-    </div>
+    </x-form-card>
 </x-layout>

@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="shadow-lg p-3 mb-5 bg-body rounded col-5 mx-auto mt-4">
+    <x-form-card>
         <h3 class="text-center">Create Product Type</h3>
         <form method="POST" action="{{asset('addProductType')}}" enctype="multipart/form-data">
             @csrf
@@ -13,5 +13,5 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-    </div>
+    </x-form-card>
 </x-layout>

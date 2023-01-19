@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="shadow-lg p-3 mb-5 bg-body rounded col-5 mx-auto mt-4">
+    <x-form-card>
         <h3 class="text-center">Login</h3>
         <form method="POST" action={{ asset('users/login') }} enctype="multipart/form-data">
             @csrf
@@ -18,12 +18,14 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+            Don't have an account? <a aria-current="page"
+                href="{{ asset('users/showRegisterForm') }}">Register</a>
             <span class="d-flex flex-row-reverse me-2">
-                <input type="checkbox" onclick="myFunction()"><span class="m-1">Show Password</span> 
+                <input type="checkbox" onclick="myFunction()"><span class="m-1">Show Password</span>
             </span>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
-    </div>
+    </x-form-card>
 </x-layout>
 
 <script>

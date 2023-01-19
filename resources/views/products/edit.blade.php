@@ -1,6 +1,5 @@
 <x-layout>
-
-    <div class="shadow-lg p-3 mb-5 bg-body rounded col-5 mx-auto mt-4">
+    <x-form-card>
         <h3 class="text-center">Update {{ $product->name }}</h3>
         <form method="POST" action="{{ asset('updateProduct/' . $product->id) }}" enctype="multipart/form-data">
             @csrf
@@ -45,5 +44,5 @@
             <input type="hidden" name="userId" value={{ Auth::user()?->id }}>
             <input type="hidden" name="product_type_id" value={{ $product->product_type_id }}>
         </form>
-    </div>
+    </x-form-card>
 </x-layout>

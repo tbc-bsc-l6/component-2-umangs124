@@ -5,7 +5,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductHistoryController;
 use App\Http\Controllers\ProductTypeController;
-use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 /*

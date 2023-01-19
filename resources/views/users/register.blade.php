@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="shadow-lg p-3 mb-5 bg-body rounded col-5 mx-auto mt-4">
+    <x-form-card>
         <h3 class="text-center">Sign up</h3>
         <form method="POST" action="{{ asset('users/register') }}" enctype="multipart/form-data">
             @csrf
@@ -47,7 +47,13 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
             <br />
-            <button type="submit" class="btn btn-primary mt-2">Register</button>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary mt-2">Register</button>
+                <div class="mt-3">
+                    Already have an account? <a aria-current="page" href="{{ asset('users/showLoginForm') }}">Login</a>
+                </div>
+            </div>
+
         </form>
-    </div>
+    </x-form-card>
 </x-layout>

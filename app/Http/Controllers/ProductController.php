@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
@@ -33,6 +34,7 @@ class ProductController extends Controller
     }
     public function index()
     {
+      //  dd(Gate::allows('admin'));
         if (Cache::has('allProducts')) {
             $products = Cache::get('allProducts');
         } else {
@@ -79,7 +81,7 @@ class ProductController extends Controller
         $product = $this->productRepository->getProductByProductId($productId);
         $stock = Stock::where('id', '=', $request->stock_id)->first();
 
-        $productTypeName = $this->productRepository->getProductTypeNameById($request->product_type_id);
+        $productTypeName = $this->productTypeRepository->getProductTypeNameById($request->product_type_id);
         $productHistory['product_name'] = $product->name;
         $productHistory['product_price'] = $product->price;
         $productHistory['product_type'] = $productTypeName->name;
@@ -122,7 +124,6 @@ class ProductController extends Controller
 
     public function update(Request $request)
     {
-
         $formFields = $request->validate([
             'price' => 'required|numeric|between:0,99999999.999',
             'description' => 'required|min:8',
@@ -136,11 +137,9 @@ class ProductController extends Controller
             $formFields['image'] = $request->file('image')->store('productImage', 'public');
         }
 
-
         $this->productRepository->updateProduct($request->productId, $formFields);
 
-
-        $productTypeName = $this->productRepository->getProductTypeNameById($request->product_type_id);
+        $productTypeName = $this->productTypeRepository->getProductTypeNameById($request->product_type_id);
         $stock = Stock::where('id', '=', $request->stock_id)->first();
 
         $productHistory['product_name'] = $product->name;
@@ -164,6 +163,19 @@ class ProductController extends Controller
         if (File::exists(public_path('storage/' . $product->image))) {
             File::delete(public_path('storage/' . $product->image));
         }
+        $productTypeName = $this->productTypeRepository->getProductTypeNameById($product->product_type_id);
+        $stock = Stock::where('id', '=', $product->stock_id)->first();
+
+
+        $productHistory['product_name'] = $product->name;
+        $productHistory['product_price'] = $product->price;
+        $productHistory['product_type'] = $productTypeName->name;
+        $productHistory['user_id'] = $product->user_id;
+        $productHistory['action'] = "Product Deleted";
+        $productHistory['stock'] = $stock->name;
+
+        $this->productHistoryRepository->addProductHistory($productHistory);
+
         $this->productRepository->deleteProduct($id);
         Cache::forget('allProducts');
         Cache::forget('allProductHistories');
