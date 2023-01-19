@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\UserRepositoryInterface;
-use App\Models\User;
 use App\Repositories\UserRepository;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;

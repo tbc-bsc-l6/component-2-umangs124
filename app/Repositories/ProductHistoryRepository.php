@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Interfaces\ProductHistoryRepositoryInterface;
 use App\Models\ProductHistory;
 use Carbon\Carbon;
-use Database\Factories\ProductFactory;
 use Illuminate\Support\Facades\DB;
 
 class ProductHistoryRepository implements ProductHistoryRepositoryInterface
@@ -16,7 +15,7 @@ class ProductHistoryRepository implements ProductHistoryRepositoryInterface
         $productHistory['updated_at'] = Carbon::now();
         DB::table('product_histories')->insert($productHistory);
     }
-    public function getALlProductHistories()
+    public function getAllProductHistories()
     {
         return ProductHistory::query('product_histories')
         ->join('users', 'users.id', '=', 'product_histories.user_id')

@@ -19,7 +19,7 @@ class ProductHistoryController extends Controller
             $productHistories = Cache::get('allProductHistories');
             return view('product_histories.index', ['productHistories' => $productHistories]);
         }
-        $productHistories = $this->productHistoryRepository->getALlProductHistories();
+        $productHistories = $this->productHistoryRepository->getAllProductHistories();
         Cache::put('allProductHistories', $productHistories, now()->addMinutes(10));
         return view('product_histories.index', ['productHistories' => $productHistories]);
     }

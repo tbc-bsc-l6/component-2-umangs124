@@ -34,7 +34,6 @@ class ProductController extends Controller
     }
     public function index()
     {
-      //  dd(Gate::allows('admin'));
         if (Cache::has('allProducts')) {
             $products = Cache::get('allProducts');
         } else {
@@ -183,6 +182,7 @@ class ProductController extends Controller
     }
     public function productsByProductTypeApi($productTypeId)
     {
-        return $this->productRepository->productsByProductType($productTypeId);
+        $productsByProductsType = $this->productRepository->productsByProductType($productTypeId);
+        return $productsByProductsType;
     }
 }
